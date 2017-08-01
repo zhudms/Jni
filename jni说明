@@ -1,0 +1,63 @@
+jni引入过程：
+（trying）
+
+1.新建带C++ supoory的工程
+2.将OpenCV引入Android Studio
+
+在Android Studio中选择File->Import Module，找到OpenCV解压的路径，选择sdk/java文件夹。
+3.更新build.gradle信息（opencv Moudle 的配置文件）
+
+4.添加Module Dependency
+
+右键app文件夹，选择Open Module Settings，在app module的Dependencies一栏中，点击右上角的绿色加号，将openCVLibrary添加进去，点击确定。
+
+5.
+Error:(12, 0) Error: NDK integration is deprecated in the current plugin.  
+Consider trying the new experimental plugin.  
+For details, see http://tools.android.com/tech-docs/new-build-system/gradle-experimental.  
+Set "android.useDeprecatedNdk=true" in gradle.properties to continue using the current NDK integration.
+
+解决：
+由别的工程拷贝 gradle.properties 文件到工程的根目录下（或者自己建也行，就是个空文件就行）
+
+添加一句话
+android.useDeprecatedNdk=true
+
+6.Error:/Users/rongyile/Demo/jniDemo/face-detection/openCVSamplefacedetection/src/main/jni/DetectionBasedTracker_jni.cpp:2:10: fatal error: 'opencv2/core.hpp' file not found
+#include <opencv2/core.hpp>
+         ^~~~~~~~~~~~~~~~~~
+1 error generated.
+make: *** [/Users/rongyile/Demo/jniDemo/face-detection/openCVSamplefacedetection/build/intermediates/ndk/debug/obj/local/arm64-v8a/objs/detection_based_tracker//Users/rongyile/Demo/jniDemo/face-detection/openCVSamplefacedetection/src/main/jni/DetectionBasedTracker_jni.o] Error 1
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':openCVSamplefacedetection:compileDebugNdk'.
+> com.android.ide.common.process.ProcessException: Error while executing '/Users/rongyile/Library/Android/sdk/ndk-bundle/ndk-build' with arguments {NDK_PROJECT_PATH=null APP_BUILD_SCRIPT=/Users/rongyile/Demo/jniDemo/face-detection/openCVSamplefacedetection/build/intermediates/ndk/debug/Android.mk APP_PLATFORM=android-21 NDK_OUT=/Users/rongyile/Demo/jniDemo/face-detection/openCVSamplefacedetection/build/intermediates/ndk/debug/obj NDK_LIBS_OUT=/Users/rongyile/Demo/jniDemo/face-detection/openCVSamplefacedetection/build/intermediates/ndk/debug/lib APP_ABI=all}
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.
+
+
+解决：build.grade文件中的Android节点下添加
+jniLibs.srcDirs = [‘src/main/libs’]
+
+    sourceSets {
+        main() {
+            jni.srcDirs = []
+            jniLibs.srcDirs = ['src/main/libs']
+        }
+    }
+
+
+
+Error:Execution failed for task ':openCVLibrary320:lint'.
+> Lint found errors in the project; aborting build.
+  Fix the issues identified by lint, or add the following to your build script to proceed with errors:
+  ...
+  android {
+      lintOptions {
+          abortOnError false
+      }
+  }
+  ...
