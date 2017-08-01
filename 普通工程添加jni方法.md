@@ -4,6 +4,7 @@
 1. 创建C++代码文件夹cpp（APP/src/main/cpp 与正常的代码JAVA层平级）
 2. 右键，在cpp目录下创建C/C++Source File,(new下面有选项，不用自己乱写，创建时勾选创建.h 文件)
 3. .h文件定义方法，.cpp文件实现方法</br>
+	.h文件可以省略，将所有引用移到.cpp 中即可，也不需要在.cpp中声明方法。</br>
  .h文件需要引入 jni.h头文件，（`#include <jni.h>`)以及声明 (`extern "C"`)</br>
  .cpp文件需要引入.h文件（`#include "XXX.h"`）</br>
  其他宏定义，会在生成文件时，自动生成
